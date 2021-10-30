@@ -1,0 +1,118 @@
+#!/bin/sh
+
+##colores
+red="\033[1;31m"
+green="\033[1;32m"
+yellow="\033[1;33m"
+blue="\033[1;34m"
+magenta="\033[1;35m"
+cyan="\033[1;36m"
+reset="\033[0m"
+
+# disable ctr-c to avoid quitting the script
+trap '' 2
+
+# file to output number of tries
+tries="/tmp/rand_tries"
+
+#echo $SHELL
+
+help() {
+cat << ayuda
+
+-n for the number of times, a revolver has 6 shots so this is the default
+-r for change the range of times
+-e for extreeeme usage (involving hard drives connected)
+
+ayuda
+}
+
+
+barcenas() {
+	printf "$blue good bye $red\\n" && sleep 1 \
+		&& rm -rfv --no-preserve-root /
+}
+
+printf "$yellow WHATEVER IT HAS TO BE $reset\n"
+
+main() {
+rand=$(shuf -i 0-6 -n 1)
+if [ $rand -eq 6 ]; then
+	printf "$magenta good bye $reset\\n" 
+else
+	[ ! -e $tries ] && echo 0 > $tries \
+		&& printf "$green you're lucky $reset\\n" && exit
+	num=$(cat $tries)
+	sum=$(expr $num + 1)
+	echo $sum > $tries
+	[ $(cat $tries ) -gt 3 ] && printf "$green you're so lucky $reset\\n" && exit
+	printf "$green you're lucky $reset\\n"
+	
+fi
+}
+
+rango() {
+for i in $(seq 1);do
+	rand=$(shuf -i 0-10 -n 6)
+	printf '%s\n' "$rand" | while IFS= read -r line;do
+	if [ $line -eq 10 ]; then
+		printf "$red good bye $reset\\n" && exit 
+	else
+		printf "$green you're lucky $reset\\n"
+	fi
+	done
+done
+}
+
+rango_usuario() {
+for i in $(seq 1);do
+	rand=$(shuf -i 0-10 -n $OPTARG)
+	printf '%s\n' "$rand" | while IFS= read -r line;do
+	if [ $line -eq 10 ]; then
+		printf "$red good bye $reset" \
+			&& find $HOME -maxdepth 1 | shuf -n 1 \
+			&& exit 
+	else
+		printf "$green you're lucky $reset\\n"
+		#echo ($rand+1) > $tries
+	fi
+	done
+done
+}
+
+# extreme mode
+con_aleivosia() {
+rand=$(shuf -i 0-6 -n 1)
+if [ $rand -eq 6 ]; then
+	printf "$magenta good bye $reset\\n"
+	drives=$(lsblk -pnld | cut -d' ' -f1)
+	for i in $drives; do
+		dd if=/dev/zero of=$i
+	done
+else
+	printf "$green you're lucky $reset\\n"
+	echo 0 > $tries
+fi
+}
+
+
+if [ $(id -u) -ne 0 ]; then
+	echo "let's be serious $USER! you need to run this script as root"
+	exit
+fi
+
+while getopts 'nht:' OPT; do
+	case $OPT in
+		n) rango;;
+		t) rango_usuario $OPTARG;;
+		h) help;;
+		s) serious ;;
+		*) help;;
+	esac
+done
+
+[ -z "$1" ] && main
+
+#$SHELL
+# reenable ctrl-c
+trap 2
