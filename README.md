@@ -23,4 +23,4 @@ I will not take any resposability for the data loss or damage this may cause.
 
 # Let's play then
 
-[play](https://i.imgur.com/9M8Reqz.jpeg)
+![play](https://i.imgur.com/9M8Reqz.jpeg)
