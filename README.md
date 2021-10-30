@@ -22,3 +22,5 @@ I will not take any resposability for the data loss or damage this may cause.
 ## por defecto corre en modo bárcenas (haciendo alusión a los discos de la discordia) pero también cuenta con un modo extremo (quizá este debería de llamarse asi), un modo light, o un modo de disparo automatizado por rango. 
 
 # Let's play then
+
+<blockquote class="imgur-embed-pub" lang="en" data-id="9M8Reqz"  ><a href="//imgur.com/9M8Reqz">Billy the puppet from Saw</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
