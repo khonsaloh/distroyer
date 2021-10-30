@@ -4,9 +4,9 @@ ruleta rusa para linux, mac y windows
 
 I will not take any resposability for the data loss or damage this may cause.
 
-* no ejecutes esto sino eres plenamente conciente de lo que hacen
+* no ejecutes esto sino eres plenamente consciente de lo que hace
 * non executes esto se non sabes o que fai
-* Do not run these scripts if you are not fully aware of what it does
+* Do not run these scripts if you are not fully aware of what they do
 * No executeu aquest script si no sou conscients del que fa
 * não execute este script se você não está ciente do que ele faz
 * non eseguire questo script se non sei a conoscenza di cosa fa
