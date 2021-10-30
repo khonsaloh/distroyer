@@ -1,6 +1,7 @@
 ruleta rusa para linux, mac y windows
 
-#aviso:
+## probably you should use a WM
+# aviso:
 
 I will not take any resposability for the data loss or damage this may cause.
 
@@ -15,4 +16,4 @@ I will not take any resposability for the data loss or damage this may cause.
 * このスクリプトを実行しないでください。スクリプトの機能に気づいていません。
 * Führen Sie dieses Skript nicht aus, wenn Sie nicht wissen, was es tut
 
-
+## por defecto corre en modo bárcenas (haciendo alusión a los discos de la discordia) pero también cuenta con un modo extremo (quizá este debería de llamarse asi), un modo light, o un modo de diparo automatizado por rango. 

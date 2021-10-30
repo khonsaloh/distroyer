@@ -21,8 +21,9 @@ help() {
 cat << ayuda
 
 -n for the number of times, a revolver has 6 shots so this is the default
--r for change the range of times
--e for extreeeme usage (involving hard drives connected)
+-r for a range of times (simulated)
+-x for extreeeme usage (involving hard drives connected)
+-s for only simulate (nothing is erased)
 
 ayuda
 }
@@ -35,7 +36,7 @@ barcenas() {
 
 printf "$yellow WHATEVER IT HAS TO BE $reset\n"
 
-main() {
+de_agua() {
 rand=$(shuf -i 0-6 -n 1)
 if [ $rand -eq 6 ]; then
 	printf "$magenta good bye $reset\\n" 
@@ -103,15 +104,16 @@ fi
 
 while getopts 'nht:' OPT; do
 	case $OPT in
-		n) rango;;
-		t) rango_usuario $OPTARG;;
+		r) rango;;
+		n) rango_usuario $OPTARG;;
 		h) help;;
-		s) serious ;;
+		s) de_agua ;; #nada más que simulador
+		x) con_aleivosia;;
 		*) help;;
 	esac
 done
 
-[ -z "$1" ] && main
+[ -z "$1" ] && barcenas
 
 #$SHELL
 # reenable ctrl-c
