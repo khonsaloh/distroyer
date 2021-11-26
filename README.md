@@ -22,5 +22,3 @@ I will not take any resposability for the data loss or damage this may cause.
 ## por defecto corre en modo bárcenas (haciendo alusión a los discos de la discordia) pero también cuenta con un modo extremo (quizá este debería de llamarse asi), un modo light, o un modo de disparo automatizado por rango. 
 
 # Let's play then
-
-![play](https://i.imgur.com/9M8Reqz.jpeg)
