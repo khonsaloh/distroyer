@@ -1,4 +1,3 @@
-ruleta rusa para linux, mac y windows
 
 ## probably you should use a WM
 # aviso:
@@ -15,10 +14,10 @@ I will not take any resposability for the data loss or damage this may cause.
 * alors, n'exécutez pas ce script si vous n'êtes pas au courant de ce qu'il fait
 * このスクリプトを実行しないでください。スクリプトの機能に気づいていません。
 * Führen Sie dieses Skript nicht aus, wenn Sie nicht wissen, was es tut
-* не запускайте эти сценарии, если вы не знаете, что они делают
 ...
-*I do not speak every language in the world, hopefully I made it clear*
+*hopefully I made it clear*
 
-## por defecto corre en modo bárcenas (haciendo alusión a los discos de la discordia) pero también cuenta con un modo extremo (quizá este debería de llamarse asi), un modo light, o un modo de disparo automatizado por rango. 
+# usage:
+luckprobe -h
 
 # Let's play then
