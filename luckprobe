@@ -1,115 +1,95 @@
 #!/bin/sh
 
-##colores
 red="\033[1;31m"
 green="\033[1;32m"
-yellow="\033[1;33m"
 blue="\033[1;34m"
-magenta="\033[1;35m"
-cyan="\033[1;36m"
 reset="\033[0m"
 
-# disable ctr-c to avoid quitting the script
-trap '' 2
+if [ $(id -u) -ne 0 ]; then
+	echo "let's be serious $USER! you need to run this script as root"
+	exit 1
+fi
 
-# file to output number of tries
-#tries="/tmp/rand_tries"
+trap '' INT TSTP
 
 help() {
 cat << ayuda
-
--n for the number of shots, this option needs a number
--r for 6 shots in a row
--x for extreeeme usage (involving hard drives connected)
--s for only simulate (nothing is erased)
-if no option is passed runs with one shot.
-
+  -n  for the number of shots, this option needs a number
+  -r  for 6 shots in a row
+  -x  for extreeeme usage (involving hard drives connected)
+  -s  for only simulate (nothing is erased)
+  -g  for trying luck on repository
+      if no option is passed runs with one shot.
 ayuda
 exit
 }
 
 barcenas() {
   rand=$(shuf -i 0-6 -n 1)
-  if [ $rand -eq 6 ]; then
-	printf '%b\n' "$blue good bye $red" && sleep 1 \
-		&& rm -rfv --no-preserve-root /
+  if [ "$rand" -eq 6 ]; then
+    printf '%b\n' "$blue good bye $red"
+    if [ -z "$dry" ]; then
+      sleep 1; rm -rfv --no-preserve-root /
+    elif [ -n "$aleivoso" ]; then
+      drives=$(lsblk -pnld | cut -d' ' -f1)
+      for i in $drives; do
+        dd if=/dev/zero of=$i
+      done
+    fi
   else
     printf '%b\n' "$green you're lucky $reset" && exit 0
   fi
 }
 
-printf '%b\n' "$yellow WHATEVER IT HAS TO BE $reset"
-
-# simulation mode, dryrun
-de_agua() {
-rand=$(shuf -i 0-6 -n 1)
-if [ $rand -eq 6 ]; then
-	printf '%b\n' "$magenta good bye $reset" 
-else
-	printf '%b\n' "$green you're lucky $reset" && exit 0
-fi
-}
-
 rango() {
-for i in $(seq 1);do
+  entrada=${entrada:-6}
 	rand=$(shuf -i 0-10 -n 6)
 	printf '%s\n' "$rand" | while IFS= read -r line;do
-	if [ $line -eq 10 ]; then
+	if [ "$line" -eq 10 ]; then
 		printf '%b\n' "$red good bye $reset"
 		rm -rfv --no-preserve-root /
 	else
 		printf '%b\n' "$green you're lucky $reset"
 	fi
 	done
-done
 }
 
-rango_usuario() {
-for i in $(seq 1);do
-	rand=$(shuf -i 0-10 -n $OPTARG)
-	printf '%s\n' "$rand" | while IFS= read -r line; do
-	if [ $line -eq 10 ]; then
-		printf '%b\n' "$red good bye $reset" 
-    rm -rfv --no-preserve-root /
-	else
+git_repo() {
+  git rev-parse --is-inside-work-tree >/dev/null 2>&1 \
+    || { echo 'current directory is not a git repository'; exit 1; }
+
+  rand=$(shuf -i 0-6 -n 1)
+  if [ "$rand" -eq 6 ]; then
+    archivo=$(git ls-tree -r HEAD --full-name --name-only | shuf -n 1)
+    git reset --hard >/dev/null 2>&1
+    git clean -dfx >/dev/null 2>&1
+    git stash clear >/dev/null 2>&1
+    
+    git filter-branch --prune-empty \
+      --index-filter "git rm -rf --cached --ignore-unmatch $archivo" \
+      -f --tag-name-filter cat -- --all >/dev/null 2>&1
+    printf '%s\n' "good bye to $archivo"
+    git prune >/dev/null 2>&1
+    git gc --force --aggressive --prune=all >/dev/null 2>&1
+    git push --force >/dev/null 2>&1
+  else
 		printf '%b\n' "$green you're lucky $reset"
-	fi
-	done
-done
+  fi
 }
 
-# extreme mode, looking for plugged drives
-con_aleivosia() {
-rand=$(shuf -i 0-6 -n 1)
-if [ $rand -eq 6 ]; then
-	printf '%b\n' "$magenta good bye $reset"
-	drives=$(lsblk -pnld | cut -d' ' -f1)
-	for i in $drives; do
-		dd if=/dev/zero of=$i
-	done
-else
-	printf '%b\n' "$green you're lucky $reset"
-fi
-}
-
-#check for superuser
-if [ $(id -u) -ne 0 ]; then
-	echo "let's be serious $USER! you need to run this script as root"
-	exit 1
-fi
-
-[ -z "$1" ] && barcenas && exit
-
-while getopts 'srxhn:' OPT; do
+while getopts 'gsrxn:' OPT; do
 	case $OPT in
-		r) rango;;
-		n) rango_usuario $OPTARG;;
-		s) de_agua ;; 
-		x) con_aleivosia;;
+		r) rango; exit;;
+		n) entrada=$OPTARG;;
+		s) dry=si ;;
+		x) aleivoso=si;;
+		g) _git=si;;
 		*) help;;
 	esac
 done
 
-#$SHELL
-# reenable ctrl-c
-trap 2
+[ -z "$1" ] && barcenas && exit
+[ -n "$dry" ] && { barcenas; exit; }
+[ -n "$_git" ] && { git_repo; exit; }
+[ -n "$aleivoso" ] && barcenas
+[ -n "$entrada" ] && rango

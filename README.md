@@ -1,11 +1,10 @@
 
-## probably you should use a WM
+## probably you should use a virtual machine
 # aviso:
 
 I will not take any resposability for the data loss or damage this may cause.
 
 * no ejecutes esto sino eres plenamente consciente de lo que hace
-* non executes esto se non sabes o que fai
 * Do not run these scripts if you are not fully aware of what they do
 * No executeu aquest script si no sou conscients del que fa
 * não execute este script se você não está ciente do que ele faz
@@ -21,3 +20,4 @@ I will not take any resposability for the data loss or damage this may cause.
 luckprobe -h
 
 # Let's play then
+# now you can call yourself a "chad"
